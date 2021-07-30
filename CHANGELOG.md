@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/JonDotsoy/commit-help/compare/v0.1.7...v0.1.8) (2021-07-30)
+
+### Features
+
+- add script breaking-change ([1e17e96](https://github.com/JonDotsoy/commit-help/commit/1e17e9694a9b869be2da9ef05845587da3ed113c))
+
+### Bug Fixes
+
+- upgrade script release ([1ae3794](https://github.com/JonDotsoy/commit-help/commit/1ae37947a9fe281ee0c5a700ea004bcd637404a8))
+
 ### [0.1.7](https://github.com/JonDotsoy/commit-help/compare/v0.1.6...v0.1.7) (2021-07-30)
 
 ### Features
