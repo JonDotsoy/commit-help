@@ -1,5 +1,7 @@
 # Commit-Help
 
+[![Node.js Package](https://github.com/JonDotsoy/commit-help/actions/workflows/npm_publish.yml/badge.svg)](https://github.com/JonDotsoy/commit-help/actions/workflows/npm_publish.yml)
+
 Features:
 
 - Shell alias `feat`: helper to commit a feature `feat(scope): <message>` or `feat: <message>`
