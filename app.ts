@@ -1,4 +1,4 @@
-import { DEFAULT_SCHEMA_PATH } from "./DEFAULT_SCHEMA_PATH";
+import { DEFAULT_SCHEMA_URL } from "./DEFAULT_SCHEMA";
 import fs from "fs";
 
 export class App {
@@ -11,7 +11,7 @@ export class App {
       `${process.cwd()}/.mmrc.json`,
       JSON.stringify(
         {
-          $schema: DEFAULT_SCHEMA_PATH,
+          $schema: DEFAULT_SCHEMA_URL,
           scopes: [],
         },
         null,
