@@ -13,7 +13,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "prepare": "tsc && husky install",
-    "release": "standard-version --release-as patch"
+    "release": "standard-version"
   },
   "keywords": [
     "commit",
