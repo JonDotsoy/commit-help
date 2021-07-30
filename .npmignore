@@ -1,0 +1,10 @@
+*.ts
+.github
+.husky
+*.tgz
+.editorconfig
+.mmrc.json
+preparePrefixCommit.js
+tsconfig.json
+!*.d.ts
+!*.js

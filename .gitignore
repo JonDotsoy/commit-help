@@ -3,3 +3,4 @@
 !commitlint.config.js
 !.husky
 !.github
+!.npmignore
