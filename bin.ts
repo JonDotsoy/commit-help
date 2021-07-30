@@ -123,6 +123,7 @@ yargs
       defTypeFn("fix");
       defTypeFn("refactor");
       defTypeFn("docs");
+      defTypeFn("breaking-change");
 
       // buf += `echo mm loaded\n`;
       buf += `\n`;
