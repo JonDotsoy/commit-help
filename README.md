@@ -1,3 +1,33 @@
+# Commit-Help
+
+Features:
+
+- Shell alias `feat`: helper to commit a feature `feat(scope): <message>` or `feat: <message>`
+- Shell alias `fix`: helper to commit a fix `fix(scope): <message>` or `fix: <message>`
+- Shell alias `refactor`: helper to commit a refactor `refactor(scope): <message>` or `refactor: <message>`
+- Auto detect scope from change files using the `.mmrc.json` file
+
+**Example mmrc file:**
+
+```json
+{
+  "scopes": [
+    {
+      "name": "user",
+      "match": "$CWD/apps/user/**"
+    },
+    {
+      "name": "products",
+      "match": "$CWD/apps/products/**"
+    },
+    {
+      "name": "settings",
+      "match": "$CWD/configs/**"
+    }
+  ]
+}
+```
+
 ## How to install
 
 ```sh
