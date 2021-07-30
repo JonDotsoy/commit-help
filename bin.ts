@@ -1,41 +1,51 @@
 #!/usr/bin/env node
 
-import yargs from "yargs"
-import { listGitStatus } from "./listGitStatus"
-import { readConfig } from "./readConfig"
-import fs from "fs"
-
-
-readConfig()
-
+import yargs from "yargs";
+import { listGitStatus } from "./listGitStatus";
+import { readConfig } from "./readConfig";
+import { preparePrefixCommit } from "./lib/preparePrefixCommit";
+import { App } from "./app";
 
 yargs
   .command({
-    command: 'init',
-    describe: 'Init mmrc file in current directory',
+    command: "init",
+    describe: "Init mmrc file in current directory",
     handler: () => {
-      const mmrcFileExists = fs.existsSync(`${process.cwd()}/.mmrc.json`)
+      const app = new App();
 
-      if (mmrcFileExists) {
-        console.log(`mmrc file already exists in ${process.cwd()}`)
-        return
+      if (app.initializeMMRC()) {
+        console.log(`Created mmrc file in ${process.cwd()}`);
+      } else {
+        console.log(`mmrc file already exists in ${process.cwd()}`);
       }
-      fs.writeFileSync(`${process.cwd()}/.mmrc.json`, JSON.stringify({
-        scopes: []
-      }, null, 2))
-      console.log(`Created mmrc file in ${process.cwd()}`)
-    }
+    },
   })
   .command({
     command: "ls",
     describe: "List all git status",
     handler: () => {
-      const status = listGitStatus()
+      const status = listGitStatus();
 
-      console.log(status)
-    }
+      console.log(status);
+    },
   })
-  .command<{ r: boolean, 'only-name': boolean, type: string }>({
+  .command({
+    command: "scopes",
+    describe: "List all scopes",
+    handler: () => {
+      const config = readConfig();
+      const status = listGitStatus();
+
+      console.log("## config");
+      console.log();
+      console.log(config);
+      console.log();
+      console.log("## status");
+      console.log();
+      console.log(status);
+    },
+  })
+  .command<{ r: boolean; "only-name": boolean; type: string }>({
     command: "commit",
     aliases: ["m"],
     describe: "Commit all changes",
@@ -45,7 +55,7 @@ yargs
         default: false,
         describe: "Print without newline.",
       },
-      'only-name': {
+      "only-name": {
         type: "boolean",
         default: false,
         describe: "Only print scope name.",
@@ -60,43 +70,18 @@ yargs
       const config = readConfig();
       const status = listGitStatus();
 
-      const prefixConventionalCommit = preparePrefixCommit(config, status, argv.type)
+      const prefixConventionalCommit = preparePrefixCommit(
+        config,
+        status,
+        argv.type
+      );
 
       if (argv.r) {
-        process.stdout.write(prefixConventionalCommit)
+        process.stdout.write(prefixConventionalCommit);
       } else {
-        console.log(prefixConventionalCommit)
+        console.log(prefixConventionalCommit);
       }
-    }
+    },
   })
   .demandCommand(1, "You must provide a command")
-  .showHelpOnFail(true)
-  .argv
-
-
-function preparePrefixCommit(config: ReturnType<typeof readConfig>, status: ReturnType<typeof listGitStatus>, type: string = "feat") {
-  const filesMatch = status
-    .map(({ flag, path, flagDesc, dirname }) => {
-      const scope = config.scopes.find((c) => c.exp.test(path)) ?? null
-      if (!scope) return null
-      return {
-        flag,
-        path,
-        flagDesc,
-        dirname,
-        scope,
-        // [``]: scope.exp.exec(path),
-      }
-    })
-    .filter(<T>(c: T): c is Exclude<T, null> => c !== null)
-    .sort((a, b) => a.dirname.length - b.dirname.length)
-    .filter(c => ['M '].includes(c.flag))
-
-  const firstMatch = filesMatch?.[0];
-
-  if (!firstMatch) {
-    return `${type}:`
-  } else {
-    return `${type}(${firstMatch.scope.name}):`
-  }
-}
+  .showHelpOnFail(true).argv;

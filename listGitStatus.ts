@@ -1,10 +1,9 @@
 import { spawnSync } from "child_process";
-import path from 'path';
-import { describe } from "yargs";
+import path from "path";
 
 /*
  * Table of relations status flags
- * 
+ *
  * X          Y     Meaning
  * -------------------------------------------------
  *          [AMD]   not updated
@@ -33,43 +32,74 @@ import { describe } from "yargs";
  */
 const describeStatusFlag = (status: string) => {
   switch (status) {
-    case '  ': return 'not updated';
-    case 'M ': return 'updated in index';
-    case 'A ': return 'added to index';
-    case 'D ': return 'deleted from index';
-    case 'R ': return 'renamed in index';
-    case 'C ': return 'copied in index';
-    case '  ': return 'index and work tree matches';
-    case ' M': return 'work tree changed since index';
-    case ' D': return 'deleted in work tree';
-    case ' R': return 'renamed in work tree';
-    case ' C': return 'copied in work tree';
-    case 'DD': return 'unmerged, both deleted';
-    case 'AU': return 'unmerged, added by us';
-    case 'UD': return 'unmerged, deleted by them';
-    case 'UA': return 'unmerged, added by them';
-    case 'DU': return 'unmerged, deleted by us';
-    case 'AA': return 'unmerged, both added';
-    case 'UU': return 'unmerged, both modified';
-    case '??': return 'untracked';
-    case '!!': return 'ignored';
-    default: return null;
+    case "  ":
+      return "not updated";
+    case "M ":
+      return "updated in index";
+    case "A ":
+      return "added to index";
+    case "D ":
+      return "deleted from index";
+    case "R ":
+      return "renamed in index";
+    case "C ":
+      return "copied in index";
+    case "  ":
+      return "index and work tree matches";
+    case " M":
+      return "work tree changed since index";
+    case " D":
+      return "deleted in work tree";
+    case " R":
+      return "renamed in work tree";
+    case " C":
+      return "copied in work tree";
+    case "DD":
+      return "unmerged, both deleted";
+    case "AU":
+      return "unmerged, added by us";
+    case "UD":
+      return "unmerged, deleted by them";
+    case "UA":
+      return "unmerged, added by them";
+    case "DU":
+      return "unmerged, deleted by us";
+    case "AA":
+      return "unmerged, both added";
+    case "UU":
+      return "unmerged, both modified";
+    case "??":
+      return "untracked";
+    case "!!":
+      return "ignored";
+    default:
+      return null;
   }
-}
+};
 
 // escapeRegExp("file/path")
-export function listGitStatus(opts?: { cwd?: string; }) {
+export function listGitStatus(opts?: { cwd?: string }) {
   const cwd = opts?.cwd ?? process.cwd();
 
   const result = spawnSync("git", ["status", "-s"], { cwd });
 
   if (result.status !== 0) {
-    throw new Error(`git status failed with status ${result.status}:\n${result.stderr.toString()}`);
+    throw new Error(
+      `git status failed with status ${
+        result.status
+      }:\n${result.stderr.toString()}`
+    );
   }
 
   let n = 0;
   const stdout = result.stdout;
-  const items: { flag: string; flagDesc: string | null, dirname: string, path: string;[k: string]: any }[] = [];
+  const items: {
+    flag: string;
+    flagDesc: string | null;
+    dirname: string;
+    path: string;
+    [k: string]: any;
+  }[] = [];
 
   const walkSpaces = () => {
     const nInit = n;
@@ -115,15 +145,15 @@ export function listGitStatus(opts?: { cwd?: string; }) {
     const nInit = n;
     n++;
     return [nInit, n];
-  }
+  };
 
   // walkOptionalSpaces();
-  const steps = stdout.filter(charCode => charCode === "\n".charCodeAt(0));
+  const steps = stdout.filter((charCode) => charCode === "\n".charCodeAt(0));
 
   const resolvePath = (pathStr: string) => {
     const tFullPath = (pStr: string) => path.resolve(cwd, pStr);
 
-    if (pathStr.startsWith("\"") && pathStr.endsWith("\"")) {
+    if (pathStr.startsWith('"') && pathStr.endsWith('"')) {
       return tFullPath(JSON.parse(pathStr));
     }
 
@@ -141,9 +171,9 @@ export function listGitStatus(opts?: { cwd?: string; }) {
     const flag = Buffer.concat([
       stdout.subarray(...statusX),
       stdout.subarray(...statusY),
-    ]).toString('utf8');
+    ]).toString("utf8");
 
-    const pathStr = resolvePath(stdout.subarray(...bufPath).toString())
+    const pathStr = resolvePath(stdout.subarray(...bufPath).toString());
 
     items.push({
       // statusX,
