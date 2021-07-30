@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/JonDotsoy/commit-help/compare/v0.1.1...v0.1.2) (2021-07-30)
+
+### Features
+
+- add shell integration ([e564edc](https://github.com/JonDotsoy/commit-help/commit/e564edc4041ac108bdc1b4e346ad01b2a6b87880))
+
 ### [0.1.1](https://github.com/JonDotsoy/commit-help/compare/v0.1.0...v0.1.1) (2021-07-30)
 
 ## 0.1.0 (2021-07-30)
