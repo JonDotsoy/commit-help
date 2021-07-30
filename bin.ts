@@ -122,6 +122,7 @@ yargs
       defTypeFn("feat");
       defTypeFn("fix");
       defTypeFn("refactor");
+      defTypeFn("docs");
 
       // buf += `echo mm loaded\n`;
       buf += `\n`;
