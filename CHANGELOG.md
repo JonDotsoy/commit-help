@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/JonDotsoy/commit-help/compare/v0.1.6...v0.1.7) (2021-07-30)
+
+### Features
+
+- add alias script docs ([a8688f1](https://github.com/JonDotsoy/commit-help/commit/a8688f13fd4a009df6f3e1f03efd0ac6c31d1f99))
+- add badge into README file ([6071ae8](https://github.com/JonDotsoy/commit-help/commit/6071ae87efd94ff00ab270b6d30591791f7314a2))
+
 ### [0.1.6](https://github.com/JonDotsoy/commit-help/compare/v0.1.5...v0.1.6) (2021-07-30)
 
 ### Features
