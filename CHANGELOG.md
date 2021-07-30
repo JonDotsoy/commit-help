@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/JonDotsoy/commit-help/compare/v0.1.2...v0.1.3) (2021-07-30)
+
+### Bug Fixes
+
+- add tsc into script prepare ([7e485af](https://github.com/JonDotsoy/commit-help/commit/7e485af29db58f44cbd1d7383e6ab834164c27bc))
+
 ### [0.1.2](https://github.com/JonDotsoy/commit-help/compare/v0.1.1...v0.1.2) (2021-07-30)
 
 ### Features
