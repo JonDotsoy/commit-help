@@ -1,3 +1,4 @@
 *.js
 !commitlint.config.js
 !.husky
+!.github
