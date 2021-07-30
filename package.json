@@ -1,6 +1,6 @@
 {
   "name": "@jondotsoy/commit-help",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "bin": "./bin",
   "main": "index.js",
