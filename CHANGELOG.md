@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/JonDotsoy/commit-help/compare/v0.1.5...v0.1.6) (2021-07-30)
+
+### Features
+
+- configure README file ([f658706](https://github.com/JonDotsoy/commit-help/commit/f6587064f0ff23cd5876e3ef928721fa04561cca))
+- update README file ([3883806](https://github.com/JonDotsoy/commit-help/commit/3883806b5e872a5a80ff2df2292e1e3d285a317d))
+- update schema on init script ([06eb7f3](https://github.com/JonDotsoy/commit-help/commit/06eb7f360bada91b888fdc45f09f6030947819d1))
+
 ### [0.1.5](https://github.com/JonDotsoy/commit-help/compare/v0.1.4...v0.1.5) (2021-07-30)
 
 ### Bug Fixes
