@@ -4,6 +4,10 @@
   "description": "",
   "bin": "./bin",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
   "scripts": {
     "clean": "tsc --build --clean",
     "build": "tsc",

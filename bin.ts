@@ -83,5 +83,55 @@ yargs
       }
     },
   })
+  .command({
+    command: "-",
+    describe: "Configure to shell",
+    handler: () => {
+      let buf = ``;
+
+      buf += `alias commit-help="node ${__filename}";\n\n`;
+
+      /*
+      Sample Fn:
+
+      feat() {
+        prefix_conventional_commit="$(mm m -r) $*"
+        echo
+        echo "Commit message:"
+        echo "    $prefix_conventional_commit"
+        echo
+        echo "[Press enter to continue]"
+        read;
+        git commit -m "$prefix_conventional_commit"
+      }
+      */
+      const defTypeFn = (fnName: string) => {
+        // buf += `#shell fn: $ ${fnName} $*\n\n`;
+        buf += `function ${fnName}() {\n`;
+        buf += `  prefix_conventional_commit="$(commit-help commit --type ${fnName} -r) $*";\n`;
+        buf += `  echo;\n`;
+        buf += `  echo "Commit message:";\n`;
+        buf += `  echo "    $prefix_conventional_commit";\n`;
+        buf += `  echo;\n`;
+        buf += `  echo "[Press enter to continue]";\n`;
+        buf += `  read;\n`;
+        buf += `  git commit -m "$prefix_conventional_commit";\n`;
+        buf += `};\n\n`;
+      };
+
+      defTypeFn("feat");
+      defTypeFn("fix");
+      defTypeFn("refactor");
+
+      // buf += `echo mm loaded\n`;
+      buf += `\n`;
+      buf += `# \n`;
+      buf += `# Copy the next line to your shell config file\n`;
+      buf += `# eval $(node ${__filename} -)\n`;
+      buf += `# \n`;
+
+      process.stdout.write(buf);
+    },
+  })
   .demandCommand(1, "You must provide a command")
   .showHelpOnFail(true).argv;
