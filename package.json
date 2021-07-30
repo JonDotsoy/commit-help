@@ -12,7 +12,7 @@
     "clean": "tsc --build --clean",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "prepare": "husky install",
+    "prepare": "tsc && husky install",
     "release": "standard-version --release-as patch"
   },
   "keywords": [
