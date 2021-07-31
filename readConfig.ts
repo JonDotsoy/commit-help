@@ -1,23 +1,49 @@
 import path from "path";
 import fs from "fs";
+import yaml from "yaml";
 import escapeRegExp from "lodash/escapeRegExp";
 
+const file = (pathStr: string) => {
+  const fileExists = fs.existsSync(pathStr);
+  if (!fileExists) {
+    return null;
+  }
+  return pathStr;
+};
+
+const parseFile = (pathStr: string) => {
+  switch (path.extname(pathStr)) {
+    case ".yaml":
+    case ".yml":
+      return yaml.parse(fs.readFileSync(pathStr, "utf8"));
+    case ".json":
+      return JSON.parse(fs.readFileSync(pathStr, "utf8"));
+    default:
+      throw new Error(`Unsupported file type: ${path.extname(pathStr)}`);
+  }
+};
+
 const reducePathModule = (pathStr: string) => {
-  const proposalPathMMRC = path.resolve(`${pathStr}/.mmrc.json`);
+  const proposalMMRCPath =
+    file(path.resolve(`${pathStr}/.mmrc.json`)) ??
+    file(path.resolve(`${pathStr}/.mmrc.yml`)) ??
+    file(path.resolve(`${pathStr}/.mmrc.yaml`));
   const proposalPathPackageJsonFile = path.resolve(`${pathStr}/package.json`);
 
-  if (fs.existsSync(proposalPathMMRC)) {
-    const data: unknown = JSON.parse(fs.readFileSync(proposalPathMMRC, "utf8"));
-    return { path: proposalPathMMRC, mmrcConfig: data };
+  if (proposalMMRCPath) {
+    const data: unknown = parseFile(proposalMMRCPath);
+    return { path: proposalMMRCPath, mmrcConfig: data };
   }
 
   if (fs.existsSync(proposalPathPackageJsonFile)) {
     const data: unknown = JSON.parse(
       fs.readFileSync(proposalPathPackageJsonFile, "utf8")
     );
-    const withMMRC = (data: any): data is { mmrc: unknown } =>
+
+    const withMMRCParameter = (data: any): data is { mmrc: unknown } =>
       data && typeof data === "object" && typeof data.mmrc === "object";
-    if (withMMRC(data)) {
+
+    if (withMMRCParameter(data)) {
       return { path: proposalPathPackageJsonFile, mmrcConfig: data.mmrc };
     }
   }
@@ -36,6 +62,30 @@ const pathToDirectories = (pathStr: string): string[] => {
   }
 
   return Array.from(acumPaths);
+};
+
+export const resolveFileExpression = (
+  pathExpStr: string,
+  opts: { cwd: string }
+) => {
+  const a = escapeRegExp(pathExpStr).replace(
+    /(?<expr>(?:\\\$CWD|\\\$DIRNAME)|\\\*\\\*|\\\*)/g,
+    (str, expr) => {
+      switch (expr) {
+        case "\\*\\*":
+          return ".*";
+        case "\\*":
+          return "[^/]*";
+        case "\\$DIRNAME":
+        case "\\$CWD":
+          return opts.cwd;
+        default:
+          return expr;
+      }
+    }
+  );
+
+  return new RegExp(`^${a}$`, "i");
 };
 
 const readConfigFounds = function (cwd: string) {
@@ -64,15 +114,13 @@ const readConfigFounds = function (cwd: string) {
   const scopesFounds = founds
     .filter(isMMRCConfig)
     .map(({ path: pathStr, mmrcConfig }) => {
-      const parseExp = (expStr: string) =>
-        expStr
-          .replace(/\\\$CWD/g, escapeRegExp(path.dirname(pathStr)))
-          .replace(/\\\*\\\*/g, ".*");
+      const parseExp = (exprStr: string) =>
+        resolveFileExpression(exprStr, { cwd: path.dirname(pathStr) });
 
       const scopes = mmrcConfig.scopes.map(({ name, match }) => ({
         name,
         match,
-        exp: new RegExp(parseExp(escapeRegExp(match))),
+        exp: parseExp(match),
         configPath: pathStr,
       }));
 

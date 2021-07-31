@@ -15,8 +15,19 @@
             "type": "string"
           },
           "match": {
-            "type": "string",
-            "description": "- Use $CWD to referrer the folder of file located.\n- Use ** to referrer any match."
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "- Use $CWD or $DIRNAME to referrer the folder of file located.\n- Use ** to referrer any match."
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "- Use $CWD or $DIRNAME to referrer the folder of file located.\n- Use ** to referrer any match."
+              }
+            ]
           }
         }
       }

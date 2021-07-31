@@ -30,6 +30,8 @@ Features:
 }
 ```
 
+## How to use
+
 ## How to install
 
 ```sh
