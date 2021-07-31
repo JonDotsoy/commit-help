@@ -120,7 +120,9 @@ const readConfigFounds = function (cwd: string) {
       const scopes = mmrcConfig.scopes.map(({ name, match }) => ({
         name,
         match,
-        exp: parseExp(match),
+        exp: Array.isArray(match)
+          ? match.map((e) => parseExp(e))
+          : parseExp(match),
         configPath: pathStr,
       }));
 
@@ -146,21 +148,4 @@ export function readConfig(opts?: { cwd?: string }) {
   return {
     scopes: configFounds.reduce((a, c) => [...a, ...c.scopes], [] as C[]),
   };
-
-  // console.log(inspect(readConfigFounds(cwd), { depth: Infinity }));
-
-  // const fileConfig = path.resolve(cwd, ".mmrc.json");
-
-  // const config = !fs.existsSync(fileConfig) ? {} : JSON.parse(fs.readFileSync(fileConfig, "utf8"));
-
-  // const getConfig = (paths: string[]) => {
-  //   let c: any = config;
-  //   for (const path of paths) {
-  //     if (!c) {
-  //       return undefined;
-  //     }
-  //     c = c[path];
-  //   }
-  //   return c;
-  // };
 }

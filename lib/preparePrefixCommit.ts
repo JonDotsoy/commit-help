@@ -1,6 +1,16 @@
 import { listGitStatus } from "../listGitStatus";
 import { readConfig } from "../readConfig";
 
+const someRegExp = (exprs: RegExp[], val: string) => {
+  for (const expr of exprs) {
+    if (expr.test(val)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 export function preparePrefixCommit(
   config: ReturnType<typeof readConfig>,
   status: ReturnType<typeof listGitStatus>,
@@ -8,7 +18,10 @@ export function preparePrefixCommit(
 ) {
   const filesMatch = status
     .map(({ flag, path, flagDesc, dirname }) => {
-      const scope = config.scopes.find((c) => c.exp.test(path)) ?? null;
+      const scope =
+        config.scopes.find((c) =>
+          Array.isArray(c.exp) ? someRegExp(c.exp, path) : c.exp.test(path)
+        ) ?? null;
       if (!scope) return null;
       return {
         flag,
