@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/JonDotsoy/commit-help/compare/v0.1.9...v0.1.10) (2021-07-31)
+
+### Bug Fixes
+
+- add yargs dependencie ([b9a4ff3](https://github.com/JonDotsoy/commit-help/commit/b9a4ff3b95e37ae4d32429dfa37098bad4be8346))
+
 ### [0.1.9](https://github.com/JonDotsoy/commit-help/compare/v0.1.8...v0.1.9) (2021-07-31)
 
 ### Features
