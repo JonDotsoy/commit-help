@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/JonDotsoy/commit-help/compare/v0.1.8...v0.1.9) (2021-07-31)
+
+### Features
+
+- add support to match as array ([5653f7b](https://github.com/JonDotsoy/commit-help/commit/5653f7b962d050bbb248cf05d7ce6a66ceea16e7))
+
 ### [0.1.8](https://github.com/JonDotsoy/commit-help/compare/v0.1.7...v0.1.8) (2021-07-30)
 
 ### Features
