@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/JonDotsoy/commit-help/compare/v0.1.10...v0.1.11) (2021-08-03)
+
 ### [0.1.10](https://github.com/JonDotsoy/commit-help/compare/v0.1.9...v0.1.10) (2021-07-31)
 
 ### Bug Fixes
