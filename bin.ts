@@ -197,13 +197,27 @@ class ShellAliasCMD extends CMD {
   }
 }
 
+// Command to print version
+class VersionCMD extends CMD {
+  command = "version";
+  describe = "Print version";
+  async handler() {
+    console.log(
+      `Commit-Help Version ${require("./package.json").version} (node: ${
+        process.version
+      })`
+    );
+  }
+}
+
 new CmdRun("commit-help")
   .add(
     new InitCMD(),
     new LsCMD(),
     new ScopesCMD(),
     new CommitCMD(),
-    new ShellAliasCMD()
+    new ShellAliasCMD(),
+    new VersionCMD()
   )
   .run(process.argv.slice(2));
 
