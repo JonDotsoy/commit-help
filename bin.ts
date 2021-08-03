@@ -5,6 +5,7 @@ import { readConfig } from "./readConfig";
 import { preparePrefixCommit } from "./lib/preparePrefixCommit";
 import { App } from "./app";
 import fs from "fs";
+import { compile } from "./template/template";
 
 const runSymbol = Symbol("CMD.run");
 
@@ -176,53 +177,23 @@ class ShellAliasCMD extends CMD {
   command = "-";
   describe = "Prepare alias command into shell";
   async handler() {
-    const bashOutLocation = `${__dirname}/.main.bash`;
-
-    let buf = ``;
-
-    buf += `#!/bin/bash\n\n`;
-
-    buf += `alias commithelp="node ${__filename}"\n\n`;
-
-    /*
-
-    Add to buf:
-
-      function commit() {
-        prefix_conventional_commit="$(commithelp commit $@)"
-        echo
-        echo "Commit message:"
-        echo "    $prefix_conventional_commit"
-        echo
-        echo "[Press enter to continue or Ctrl-C to abort]"
-        read -n 1 confirm
-        git commit -m "$prefix_conventional_commit"
+    const valsPosts = compile(
+      fs.readFileSync(`${__dirname}/shell.template.bash`),
+      {
+        commitHelpScript: __filename,
       }
-    */
+    );
 
-    buf += "function commit() {\n";
-    buf += '  prefix_conventional_commit="$(commithelp commit $@)"\n';
-    buf += '  if [ -z "$prefix_conventional_commit" ]; then\n';
-    buf += "  else\n";
-    buf += "    echo\n";
-    buf += '    echo "Commit message:"\n';
-    buf += '    echo "    $prefix_conventional_commit"\n';
-    buf += "    echo\n";
-    buf += '    echo "[Press enter to continue or Ctrl-C to abort]"\n';
-    buf += "    read -n 1 confirm\n";
-    buf += '    git commit -m "$prefix_conventional_commit"\n';
-    buf += "  fi\n";
-    buf += "}\n\n";
+    const bashOutLocation = `${__dirname}/.main.bash`;
 
     let bufConsole = "";
 
-    bufConsole += `# Copy the following line to your .bashrc or .zshrc file\n`;
-    bufConsole += `#\n`;
-    bufConsole += `#   source ${JSON.stringify(bashOutLocation)}\n`;
+    bufConsole += `Copy the following line to your .bashrc or .zshrc file\n`;
+    bufConsole += `\n`;
+    bufConsole += `   source ${JSON.stringify(bashOutLocation)}\n`;
 
-    // process.stdout.write(buf);
+    fs.writeFileSync(`${bashOutLocation}`, valsPosts);
     console.log(bufConsole);
-    fs.writeFileSync(bashOutLocation, buf);
   }
 }
 
